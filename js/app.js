@@ -1,17 +1,17 @@
 
 
-const keyboard = document.getElementById('qwerty');
+const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const button = document.getElementsByTagName('BUTTON');
 
 let missed = 0;
 
 const phrases = [
-    'Bite the bullet',
-    'Better late than never',
-    'A blessing in disguise',
-    'Go back to the drawing board',
-    'Random phrase',
+    'bite the bullet',
+    'better late than never',
+    'a blessing in disguise',
+    'go back to the drawing board',
+    'random phrase',
 ];
 
 
@@ -37,7 +37,8 @@ function getRandomPhrasesArray(phrases) {
 }
 
 let phraseArray = getRandomPhrasesArray(phrases);
-console.log(phraseArray);
+
+console.log(phraseArray); //DELETE CONSOLE LOG LATER
 
 //function to split the random phrase into characters and spaces.
 //Letters and spaces appended as list items to ul
@@ -53,50 +54,75 @@ function addPhraseToDisplay(phraseArray) {
             } else {
                 li.className = 'letter';
             }
-        //console.log(li); //REMOVE CONSOLE LOG LATER
         ul.appendChild(li);
      }
 }
 
 addPhraseToDisplay(phraseArray);
 
-document.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-        let randomValue = document.getElementsByTagName('BUTTON');
-        console.log(`you're clicking me`);
+const totalLetters = document.querySelectorAll('.letter');
+
+
+//funtion to return a letter if in phrase
+//Or return a null value if not in phrase
+
+function checkLetter(clickedButton) {
+    
+    const letters = document.getElementsByTagName('LI');
+    let matchFound = null;
+
+    for (let i = 0; i < letters.length; i++) {
         
+        let letter = '';
+        letter = letters[i].textContent;
+        //console.log((letter)); DELETE LATER
+        if (letter === clickedButton) {
+            //console.log('yippee'); DELETE LATER
+            letters[i].className = "show";
+            matchFound = letter;
+            //console.log(matchFound); DELETE LATER
+        }
+    }  return matchFound;
+};
+
+
+qwerty.addEventListener('click', (e) => {
+    if (e.target === button || e.target.className !== 'chosen') {
+
+        let chosenButton = e.target;
+        chosenButton.className = 'chosen'
+        let buttonLetter = chosenButton.textContent;
+        //console.log(buttonLetter); DELETE LATER
+        let letterGuess = checkLetter(buttonLetter);
+        //console.log(letterGuess); DELETE LATER
+
+        const heartbox = document.querySelector('ol');
+        const heart = document.createElement('li');
+        const removeHeart = document.querySelector('ol').lastElementChild;
+        heart.className = 'tires';
+        heart.innerHTML = `<img src="images/lostHeart.png" height="35px" width="30px">`;
+
+
+            if (letterGuess === null) {
+                heartbox.prepend(heart);
+                removeHeart.remove();
+                missed++;
+                console.log(missed); // DELETE LATER
+            }
     }
 });
 
 
 
-
-const letters = document.querySelectorAll('.letter'); //correctly gets nodelist [li.letter]
-
-
-function checkLetter(booty) {
-    for (i = 0; i < letters.length; i++) {
-        
-        let matchFound = null; //correctly returns null
-        let letter = letters[i].textContent; //letter now stores letter in element array
-
-        if (letter === booty) {
-            letters[i].className = "show";
-            matchFound = booty.textContent;
-            console.log('yippe');
-        }
-        return matchFound;
-    }
-};
-
-
-
-// const letters = document.querySelectorAll('.letter');
-//     let letter = letters.textContent;
-//     console.log(letters); //logging <li class='letter'>G</li>
-//     console.log(letter);
-
-checkLetter('A');
-
-
+function checkwin() {
     
+    const winOverlay = document.querySelector('#overlay');
+    const totalShow = document.querySelectorAll('.show');
+
+    if (totalLetters.length === totalShow.length) {
+        console.log('yiippppeee');
+        winOverlay.className = 'win'
+    }
+}
+
+checkwin();
