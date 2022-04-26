@@ -106,7 +106,9 @@ button {
 
 .show {
   color: #000;
-  background-color: #76CE82;
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--color-win);
+  font-size: var(--font-size-medium);
 }
 
 /* Keyboard */

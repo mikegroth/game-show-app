@@ -62,9 +62,8 @@ addPhraseToDisplay(phraseArray);
 
 const totalLetters = document.querySelectorAll('.letter');
 
+console.log(totalLetters.length); //DELETE LATER
 
-//funtion to return a letter if in phrase
-//Or return a null value if not in phrase
 
 function checkLetter(clickedButton) {
     
@@ -85,44 +84,48 @@ function checkLetter(clickedButton) {
     }  return matchFound;
 };
 
+function checkWin() {
+    
+    const winOverlay = document.querySelector('#overlay');
+    const totalShow = document.querySelectorAll('.show');
+    console.log(totalShow.length);
+
+    if (totalLetters.length === totalShow.length) {
+        console.log('yiippppeee');
+        winOverlay.className = 'win';
+    }
+}
+
 
 qwerty.addEventListener('click', (e) => {
-    if (e.target === button || e.target.className !== 'chosen') {
+    if (e.target === button || e.target.className !== 'chosen' && e.target.className !== 'keyrow') {
 
         let chosenButton = e.target;
         chosenButton.className = 'chosen'
         let buttonLetter = chosenButton.textContent;
-        //console.log(buttonLetter); DELETE LATER
         let letterGuess = checkLetter(buttonLetter);
-        //console.log(letterGuess); DELETE LATER
 
-        const heartbox = document.querySelector('ol');
+        const heartBox = document.querySelector('ol');
         const heart = document.createElement('li');
         const removeHeart = document.querySelector('ol').lastElementChild;
-        heart.className = 'tires';
+        heart.className = 'tries';
         heart.innerHTML = `<img src="images/lostHeart.png" height="35px" width="30px">`;
 
+        checkWin();
 
             if (letterGuess === null) {
-                heartbox.prepend(heart);
+                heartBox.prepend(heart);
                 removeHeart.remove();
                 missed++;
                 console.log(missed); // DELETE LATER
             }
+            
     }
 });
 
 
 
-function checkwin() {
-    
-    const winOverlay = document.querySelector('#overlay');
-    const totalShow = document.querySelectorAll('.show');
 
-    if (totalLetters.length === totalShow.length) {
-        console.log('yiippppeee');
-        winOverlay.className = 'win'
-    }
-}
 
-checkwin();
+
+
