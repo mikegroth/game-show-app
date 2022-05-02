@@ -100,6 +100,14 @@ function resetKeys() {
     }
 }
 
+function resetHearts() {
+    const heartReset = document.getElementsByClassName('tries');
+
+    for (let i = 0; i < heartReset.length; i++) {
+        heartReset[i].innerHTML =`<img src="images/liveHeart.png" height="35px" width="30px">`;
+    }
+}
+
     
 
 
@@ -165,25 +173,14 @@ document.addEventListener('click', (e) => {
 
         addPhraseToDisplay(phraseArray);
 
+        resetHearts();
+
         missed = 0;
 
         console.log('Here we go again');
 
-        // const heartBox = document.querySelector('ol');
-        // const heart = document.createElement('li');
-        // const removeHearts = heartBox.childNodes;
-        // heart.className = 'tries';
-        // heart.innerHTML = `<img src="images/liveHeart.png" height="35px" width="30px">`;
-        // heartBox.remove(removeHearts);
-
-        // for (let i = 0; i < 4; i++) {
-            
-        //     heartBox.prepend(heart);
-        // }
     }
 });
-
-
 
 
 
