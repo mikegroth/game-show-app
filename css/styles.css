@@ -94,21 +94,16 @@ button {
   width: 65px;
   padding: 20px 1px 0 1px;
   margin-right: 2px;
-  color: transparent;
-  background: var(--color-neutral-light);
+  margin-top: 2px;
+  color: black;
+  background: var(--color-win);
   border-radius: 5px;
+  transform: rotate(360deg);
+  transition: transform .33s ease-in;
 }
-
 
 .space {
   width: 15px;
-}
-
-.show {
-  color: #000;
-  font-family: 'Open Sans', sans-serif;
-  background-color: var(--color-win);
-  font-size: var(--font-size-medium);
 }
 
 /* Keyboard */
@@ -123,6 +118,7 @@ button {
   border-radius: 5px;
   font-size: var(--font-size-medium);
   color: #FFFFFF;
+  transition: border-radius .25s ease-in;
 }
 
 .btn__reset {

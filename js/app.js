@@ -7,10 +7,10 @@ const button = document.getElementsByTagName('BUTTON');
 let missed = 0;
 
 const phrases = [
-    'bite the bullet',
-    'better late than never',
-    'a blessing in disguise',
-    'go back to the drawing board',
+    //'bite the bullet',
+    //'better late than never',
+    //'a blessing in disguise',
+    //'go back to the drawing board',
     'random phrase',
 ];
 
@@ -19,8 +19,8 @@ const phrases = [
 
 document.addEventListener('click', (e) => {
     if (e.target.className === 'btn__reset') {
-        const hideStart = document.querySelector('#overlay');
-        hideStart.style.display = 'none';
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none';
     }
 });
 
@@ -38,7 +38,6 @@ function getRandomPhrasesArray(phrases) {
 
 let phraseArray = getRandomPhrasesArray(phrases);
 
-console.log(phraseArray); //DELETE CONSOLE LOG LATER
 
 //function to split the random phrase into characters and spaces.
 //Letters and spaces appended as list items to ul
@@ -58,12 +57,22 @@ function addPhraseToDisplay(phraseArray) {
      }
 }
 
+//function used to remove all phrase letters when a player resets the game
+
+function removePhraseFromDisplay() {
+        const ul = document.querySelector('#phrase ul');
+        while (ul.hasChildNodes()) {
+            ul.removeChild(ul.firstChild);
+     }
+}
+
+
+
 addPhraseToDisplay(phraseArray);
 
 const totalLetters = document.querySelectorAll('.letter');
 
 console.log(totalLetters.length); //DELETE LATER
-
 
 function checkLetter(clickedButton) {
     
@@ -74,28 +83,48 @@ function checkLetter(clickedButton) {
         
         let letter = '';
         letter = letters[i].textContent;
-        //console.log((letter)); DELETE LATER
         if (letter === clickedButton) {
-            //console.log('yippee'); DELETE LATER
             letters[i].className = "show";
             matchFound = letter;
-            //console.log(matchFound); DELETE LATER
         }
     }  return matchFound;
 };
 
-function checkWin() {
-    
-    const winOverlay = document.querySelector('#overlay');
-    const totalShow = document.querySelectorAll('.show');
-    console.log(totalShow.length);
+//function used to reset keyboard buttons to a blank class.
 
-    if (totalLetters.length === totalShow.length) {
-        console.log('yiippppeee');
-        winOverlay.className = 'win';
+function resetKeys() {
+    const keys = document.getElementsByTagName('BUTTON')
+
+    for (let i = 0; i < keys.length; i++) {
+        keys[i].classList.remove('chosen');
     }
 }
 
+    
+
+
+
+function checkWin() {
+    
+    const overlay = document.querySelector('#overlay');
+    const totalShow = document.querySelectorAll('.show');
+
+    if (totalLetters.length === totalShow.length) {
+        console.log('yiippppeee');
+        overlay.className = 'win';
+        overlay.style.display = 'flex';
+        phrase.style.display = 'none';
+        overlay.querySelector('.title').innerHTML = 'Congrats on the win!';
+        overlay.querySelector('.btn__reset').innerHTML = 'Restart';
+
+    } else if ( missed >= 5 ) {
+        overlay.className = 'lose';
+        overlay.style.display = 'flex';
+        phrase.style.display = 'none';
+        overlay.querySelector('.title').innerHTML = `Bummer! You've run out of hearts.`;
+        overlay.querySelector('.btn__reset').innerHTML = 'Restart';
+    }
+}
 
 qwerty.addEventListener('click', (e) => {
     if (e.target === button || e.target.className !== 'chosen' && e.target.className !== 'keyrow') {
@@ -111,8 +140,6 @@ qwerty.addEventListener('click', (e) => {
         heart.className = 'tries';
         heart.innerHTML = `<img src="images/lostHeart.png" height="35px" width="30px">`;
 
-        checkWin();
-
             if (letterGuess === null) {
                 heartBox.prepend(heart);
                 removeHeart.remove();
@@ -120,10 +147,41 @@ qwerty.addEventListener('click', (e) => {
                 console.log(missed); // DELETE LATER
             }
             
+            checkWin();           
     }
 });
 
+//Restart Button to reset the game //
 
+document.addEventListener('click', (e) => {
+    if (e.target.className === 'btn__reset' && e.target.innerHTML === 'Restart') {
+        const overlay = document.querySelector('#overlay');
+        overlay.style.display = 'none';
+        phrase.style.display = 'initial';
+
+        resetKeys();
+
+        removePhraseFromDisplay();
+
+        addPhraseToDisplay(phraseArray);
+
+        missed = 0;
+
+        console.log('Here we go again');
+
+        // const heartBox = document.querySelector('ol');
+        // const heart = document.createElement('li');
+        // const removeHearts = heartBox.childNodes;
+        // heart.className = 'tries';
+        // heart.innerHTML = `<img src="images/liveHeart.png" height="35px" width="30px">`;
+        // heartBox.remove(removeHearts);
+
+        // for (let i = 0; i < 4; i++) {
+            
+        //     heartBox.prepend(heart);
+        // }
+    }
+});
 
 
 
