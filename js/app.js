@@ -7,11 +7,11 @@ const button = document.getElementsByTagName('BUTTON');
 let missed = 0;
 
 const phrases = [
-    //'bite the bullet',
-    //'better late than never',
-    //'a blessing in disguise',
-    //'go back to the drawing board',
-    'random phrase',
+    'easy does it',
+    'wild goose chase',
+    'break a leg',
+    'miss the boat',
+    'on the ball',
 ];
 
 
@@ -23,8 +23,6 @@ document.addEventListener('click', (e) => {
         overlay.style.display = 'none';
     }
 });
-
-
 
 //function to randomly pick a phrase from the array, and creates a new split array of that phrase
 //funtion will take an array of phrases as a parameter
@@ -66,13 +64,11 @@ function removePhraseFromDisplay() {
      }
 }
 
-
-
 addPhraseToDisplay(phraseArray);
 
-const totalLetters = document.querySelectorAll('.letter');
+let totalLetters = document.querySelectorAll('.letter');
 
-console.log(totalLetters.length); //DELETE LATER
+//function to check if the letter clicked is within the random phrase
 
 function checkLetter(clickedButton) {
     
@@ -93,12 +89,14 @@ function checkLetter(clickedButton) {
 //function used to reset keyboard buttons to a blank class.
 
 function resetKeys() {
-    const keys = document.getElementsByTagName('BUTTON')
+    const keys = document.getElementsByTagName('BUTTON');
 
     for (let i = 0; i < keys.length; i++) {
         keys[i].classList.remove('chosen');
     }
 }
+
+//function used within restart button to reset hearts
 
 function resetHearts() {
     const heartReset = document.getElementsByClassName('tries');
@@ -107,10 +105,6 @@ function resetHearts() {
         heartReset[i].innerHTML =`<img src="images/liveHeart.png" height="35px" width="30px">`;
     }
 }
-
-    
-
-
 
 function checkWin() {
     
@@ -135,10 +129,10 @@ function checkWin() {
 }
 
 qwerty.addEventListener('click', (e) => {
-    if (e.target === button || e.target.className !== 'chosen' && e.target.className !== 'keyrow') {
+    if (e.target === button || e.target.className !== 'chosen' && e.target.className !== 'keyrow' && e.target.className !== 'section') {
 
         let chosenButton = e.target;
-        chosenButton.className = 'chosen'
+        chosenButton.className = 'chosen';
         let buttonLetter = chosenButton.textContent;
         let letterGuess = checkLetter(buttonLetter);
 
@@ -152,14 +146,15 @@ qwerty.addEventListener('click', (e) => {
                 heartBox.prepend(heart);
                 removeHeart.remove();
                 missed++;
-                console.log(missed); // DELETE LATER
             }
             
             checkWin();           
     }
 });
 
-//Restart Button to reset the game //
+//Restart Button click event to reset the game //
+//clears the keyboard, removes the previous phrase, generates another random phrase
+//adds the new phrase to display, and resets hearts
 
 document.addEventListener('click', (e) => {
     if (e.target.className === 'btn__reset' && e.target.innerHTML === 'Restart') {
@@ -171,14 +166,17 @@ document.addEventListener('click', (e) => {
 
         removePhraseFromDisplay();
 
-        addPhraseToDisplay(phraseArray);
+        let restartArray = getRandomPhrasesArray(phrases);
+
+        addPhraseToDisplay(restartArray);
+
+        totalLetters = document.querySelectorAll('.letter');
 
         resetHearts();
 
         missed = 0;
 
         console.log('Here we go again');
-
     }
 });
 
