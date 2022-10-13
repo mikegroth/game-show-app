@@ -10,7 +10,7 @@ const phrases = [
     'easy does it',
     'wild goose chase',
     'break a leg',
-    'miss the boat',
+    'missed the boat',
     'on the ball',
 ];
 
